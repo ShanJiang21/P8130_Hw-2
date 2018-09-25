@@ -1,0 +1,106 @@
+---
+title: "P8130_hw2"
+author: "Shan Jiang"
+date: "9/24/2018"
+output: html_document
+---
+## Prolem 6(a)
+* Import Data from xlsx file and detect the NAs in the data
+```{r 1.1.1}
+library(tidyverse)
+Migraine <- readxl::read_excel("~/Downloads/CUMC Y1/Biostat Method/Hw 2/Migraine.xlsx")
+any(is.na(Migraine))
+nrow(Migraine)
+```
+
+* Find out the NAs in each column and Rename the dataframe
+```{r 1.1.2}
+Migraine_NA = Migraine
+sum(is.na(Migraine_NA))
+colSums(is.na(Migraine_NA))
+```
+
+
+* Removing NAs in R dataframes
+```{r 1.1.3}
+Migraine_clean = na.omit(Migraine_NA)
+View(Migraine_clean)
+nrow(Migraine_clean)
+colSums(is.na(Migraine_clean))
+```
+ 
+* Exploring the dataframe after data cleaning
+```{r 1.1.4}
+names(Migraine_clean)
+head(Migraine_clean)
+tail(Migraine_clean)
+```
+Rename the data.frame
+```{r 1.1.5}
+Migraine_df = na.omit(Migraine_NA)
+View(Migraine_df)
+```
+
+* Sum the data with name  
+```{r 1.1.6}
+library(psych)
+describeBy(Migraine_df, Migraine_df$Migraine)
+
+describeBy(Migraine_df, Migraine_df$CESD >= 16)
+describeBy(Migraine_df$NDDIE, Migraine_df$CESD >= 16)
+```
+* Sum the data by cutoff of NDDIE >= 16
+```{r 1.1.9}
+describeBy(Migraine_df, Migraine_df$NDDIE >= 16)
+```
+
+
+*Boxplot of CESD by migraine status
+```{r 1.2.1}
+  boxplot(Migraine_df$CESD~Migraine_df$Migraine,
+        main = "Boxplot of CESD by migraine status "
+        )
+```
+*Boxplot of NDDIE by migraine status
+```{r 1.2.2}
+boxplot(Migraine_df$NDDIE~Migraine_df$Migraine,
+        main = "Boxplot of NDDIE  by migraine status "
+        )
+```
+
+ABNAS (the sum of memory and language)
+```{r 1.2.3}
+boxplot(Migraine_df$`ABNAS memory`~Migraine_df$Migraine,
+        main = "Boxplot of ABNAS memory by migraine status "
+        )
+boxplot(Migraine_df$`ABNAS language`~Migraine_df$Migraine,
+        main = "Boxplot of ABNAS language by migraine status "
+        )
+```
+In this graph, we can see 
+
+
+
+
+```{r}
+library(gmodels)
+apply(Migraine_df, 2, mean)
+colMeans(Migraine_df)
+mean_df <- aggregate(Migraine_df, by = list(Migraine_df$Migraine), mean)
+sd_df <- aggregate(Migraine_df, by = list(Migraine_df$Migraine), sd)
+
+quantile(Migraine_df$CESD)
+quantile(Migraine_df$NDDIE)
+quantile(Migraine_df$`ABNAS memory`)
+quantile(Migraine_df$`ABNAS language`)
+ 
+```
+
+ mean(Migraine_df$CESD)
+mean(Migraine_df$NDDIE)
+mean(Migraine_df$`ABNAS memory`)
+mean(Migraine_df$`ABNAS language`)
+
+sum(Migraine_df$`ABNAS memory`, Migraine_df$`ABNAS language`)
+
+
